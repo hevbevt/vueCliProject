@@ -1,24 +1,42 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <button @click="getData()">获取数据</button>
+    <span>{{msg}}</span>
   </div>
 </template>
 
 <script>
+import store from '../vuex/store';
+
 export default {
   name: 'hello',
   data() {
     return {
-      msg: 'Welcome to Your Vue.js App',
+      msg: '',
+      data: [],
     };
   },
+  methods: {
+    getData() {
+      this.$store.dispatch('getTableData').then((resp) => {
+        this.msg = resp.data.content;
+      });
+    },
+  },
+  store,
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
+<style lang="scss" scoped>
+.hello{
+  text-align: left;
+  margin-left: 60px;
+  h1, h2 {
+    margin: 10px;
+    display:inline-block;
+    font-weight: normal;
+  }
 }
 
 ul {
