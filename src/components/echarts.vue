@@ -51,6 +51,7 @@ class BreathFirstProcess {
     this.depth = 0;
     this.level = {};
     this.chartNodes = [];
+    this.bfs(graph);
     graph.adj.map((graphItem, root) => {
       if (!this.marked[root]) {
         this.level[root] = this.depth;
@@ -124,6 +125,40 @@ const getLinkData = function getLinkData(data) {
   return result;
 };
 
+const getHeight = function getHeight(levels) {
+  const positionMap = [];
+  Object.keys(levels).map((key) => {
+    const value = levels[key];
+    if (positionMap[value]) {
+      positionMap[value].push(key);
+    } else {
+      positionMap[value] = [key];
+    }
+    return key;
+  });
+  let max = 0;
+  positionMap.forEach((map) => {
+    if (map.length > max) {
+      max = map.length;
+    }
+  });
+  return `${(max * 50) + (max > 1 ? 0 : 50)}px`;
+};
+
+const getWidth = function getWidth(levels) {
+  const positionMap = [];
+  Object.keys(levels).map((key) => {
+    const value = levels[key];
+    if (positionMap[value]) {
+      positionMap[value].push(key);
+    } else {
+      positionMap[value] = [key];
+    }
+    return key;
+  });
+  return `${(positionMap.length * 250)}px`;
+};
+
 const getPositionData = function getPositionData(graph, levels) {
   const result = [];
   const positionMap = [];
@@ -139,8 +174,20 @@ const getPositionData = function getPositionData(graph, levels) {
   for (let i = 0; i < graph.V; i++) {
     result.push({
       name: i.toString(),
-      x: levels[i],
-      y: positionMap[levels[i]].indexOf(i.toString()) / 4,
+      x: levels[i] * 10,
+      y: positionMap[levels[i]].indexOf(i.toString()) * 2.5,
+      itemStyle: {
+        normal: {
+          color: '#fff',
+          borderColor: '#929292',
+          borderWidth: 1,
+        },
+      },
+      label: {
+        normal: {
+          color: '#929292',
+        },
+      },
     });
   }
   return result;
@@ -150,18 +197,10 @@ export default {
   name: 'chart',
   mounted() {
     const chartDom = document.getElementById('myChart');
-    chartDom.style.width = '2200px';
-    chartDom.style.height = '1000px';
     const sourceData = {
-      0: [1],
-      1: [2, 5],
-      2: [3],
-      3: [4],
-      4: [],
-      5: [6, 7],
-      6: [4],
-      7: [4],
-      8: [7],
+      0: [1, 2],
+      1: [2],
+      2: [],
     };
     const sourceGraph = new Digraph(Object.keys(sourceData).length);
     Object.keys(sourceData).map((key) => {
@@ -186,20 +225,21 @@ export default {
     const positionData = getPositionData(sourceGraph, levels);
     // eslint-disable-next-line
     console.log(positionData);
+    chartDom.style.width = getWidth(levels);
+    chartDom.style.height = getHeight(levels);
     const myChart = echarts.init(chartDom);
     myChart.setOption({
       tooltip: {},
       series: [
         {
-          top: 40,
-          left: 40,
-          width: '2000px',
-          heigth: '100%',
+          top: '20',
+          bottom: '30',
+          left: '35',
           type: 'graph',
           layout: 'none',
           symbol: 'rect',
-          symbolSize: [80, 40],
-          symbolOffset: [15, 0],
+          symbolSize: [120, 30],
+          symbolOffset: [30, 0],
           label: {
             normal: {
               show: true,
@@ -207,96 +247,6 @@ export default {
           },
           edgeSymbol: ['circle', 'arrow'],
           edgeSymbolSize: [10, 15],
-          // data: [{
-          //   name: '工序1',
-          //   x: 1,
-          //   y: 1,
-          // }, {
-          //   name: '工序3',
-          //   x: 1,
-          //   y: 1.5,
-          // }, {
-          //   name: '工序2',
-          //   x: 2,
-          //   y: 1,
-          // }, {
-          //   name: '工序4',
-          //   x: 2,
-          //   y: 1.5,
-          // }, {
-          //   name: '工序5',
-          //   x: 3,
-          //   y: 1.25,
-          // }, {
-          //   name: '工序6',
-          //   x: 4,
-          //   y: 1,
-          // }, {
-          //   name: '工序7',
-          //   x: 5,
-          //   y: 1,
-          // }, {
-          //   name: '工序8',
-          //   x: 6,
-          //   y: 1,
-          // }, {
-          //   name: '工序9',
-          //   x: 6,
-          //   y: 1.5,
-          // }, {
-          //   name: '工序16',
-          //   x: 6,
-          //   y: 2,
-          // }, {
-          //   name: '工序17',
-          //   x: 6,
-          //   y: 2.5,
-          // }, {
-          //   name: '工序18',
-          //   x: 6,
-          //   y: 3,
-          // }, {
-          //   name: '工序10',
-          //   x: 7,
-          //   y: 1,
-          // }, {
-          //   name: '工序11',
-          //   x: 8,
-          //   y: 1,
-          // }, {
-          //   name: '工序12',
-          //   x: 9,
-          //   y: 1,
-          // }, {
-          //   name: '工序13',
-          //   x: 10,
-          //   y: 1,
-          // }, {
-          //   name: '工序14',
-          //   x: 11,
-          //   y: 1,
-          // }, {
-          //   name: '工序15',
-          //   x: 12,
-          //   y: 1,
-          // }],
-          // links: [{
-          //   value: 0.5,
-          //   source: '工序1',
-          //   target: '工序2',
-          // }, {
-          //   source: '工序3',
-          //   target: '工序4',
-          // }, {
-          //   source: '工序2',
-          //   target: '工序5',
-          // }, {
-          //   source: '工序4',
-          //   target: '工序5',
-          // }, {
-          //   source: '工序6',
-          //   target: '工序7',
-          // }],
           data: positionData,
           links: linkData,
           lineStyle: {
@@ -314,7 +264,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.charts{
+.charts {
   height: 200px;
   overflow-y: auto;
   #myCharts {
