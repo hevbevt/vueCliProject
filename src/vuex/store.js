@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import axios from 'axios';
+// import axios from 'axios';
 
 Vue.use(Vuex);
 
@@ -21,10 +21,7 @@ const mutations = {
 
 const actions = {
   getTableData() {
-    return axios({
-      method: 'get',
-      url: 'http://127.0.0.1:8080/greeting',
-    });
+    return 'Hello Travis';
   },
 };
 

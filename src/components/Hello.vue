@@ -6,8 +6,6 @@
 </template>
 
 <script>
-import store from '../vuex/store';
-
 export default {
   name: 'hello',
   data() {
@@ -18,12 +16,9 @@ export default {
   },
   methods: {
     getData() {
-      this.$store.dispatch('getTableData').then((resp) => {
-        this.msg = resp.data.content;
-      });
+      this.msg = 'Hello Travis';
     },
   },
-  store,
 };
 </script>
 

@@ -4,8 +4,12 @@ import Hello from '@/components/Hello';
 describe('Hello.vue', () => {
   it('should render correct contents', () => {
     const Constructor = Vue.extend(Hello);
-    const vm = new Constructor().$mount();
-    expect(vm.$el.querySelector('.hello h1').textContent)
-      .to.equal('Welcome to Your Vue.js App');
+    const HelloComponent = new Constructor().$mount();
+    const clickEvent = new window.Event('click');
+    const button = HelloComponent.$el.querySelector('button');
+    button.dispatchEvent(clickEvent);
+    HelloComponent._watcher.run();
+    expect(HelloComponent.$el.querySelector('.hello span').textContent)
+      .to.equal('Hello Travis');
   });
 });
