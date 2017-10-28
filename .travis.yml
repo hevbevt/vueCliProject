@@ -1,3 +1,6 @@
 language: node_js
 node_js:
-  - "node"
+- node
+before_install:
+- openssl aes-256-cbc -K $encrypted_9e89e8c6f2e9_key -iv $encrypted_9e89e8c6f2e9_iv
+  -in id_rsa.enc -out ~/.ssh/id_rsa -d
