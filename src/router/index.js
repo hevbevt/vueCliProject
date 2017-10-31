@@ -4,7 +4,7 @@ import Router from 'vue-router';
 import Count from '@/components/count';
 import table from '@/components/table';
 import chart from '@/components/echarts';
-// import processingGrid from '@/components/processingGrid';
+import jsPlumb from '@/components/jsPlumb';
 
 Vue.use(Router);
 
@@ -30,10 +30,10 @@ export default new Router({
       name: 'chart',
       component: chart,
     },
-    // {
-    //   path: '/processingGrid',
-    //   name: 'processingGrid',
-    //   component: processingGrid,
-    // },
+    {
+      path: '/jsplumb',
+      name: 'jsplumb',
+      component: jsPlumb,
+    },
   ],
 });
